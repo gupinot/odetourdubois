@@ -132,7 +132,7 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
   #lb-next  { right: 0.5rem; top: 50%; transform: translateY(-50%); font-size: 3rem; }
 </style>
 
-<script define:vars={{ photos }}>
+<script define:vars={{ photos, base }}>
   const items = document.querySelectorAll(".gallery-item");
   const lb = document.getElementById("lightbox");
   const lbImg = document.getElementById("lb-img");
@@ -142,7 +142,7 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
   function show(index) {
     current = (index + photos.length) % photos.length;
-    lbImg.src = photos[current].src;
+    lbImg.src = base + photos[current].src.replace(/^\//, '');
     lbImg.alt = photos[current].title || "sculpture";
     lbCaption.textContent = photos[current].title || "";
     lb.setAttribute("aria-hidden", "false");
