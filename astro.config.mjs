@@ -4,5 +4,5 @@ import { defineConfig } from 'astro/config';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://gupinot.github.io',
-  base: '/odetourdubois',
+  base: process.env.CI ? '/odetourdubois' : '/',
 });
