@@ -1,0 +1,55 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Bienvenue" theme="dark">
+  <div class="welcome">
+    <div class="image-wrap">
+      <img
+        src="/images/bienvenue/funambule.jpg"
+        alt="Roland Pinot — sculpteur sur bois"
+        class="hero"
+      />
+    </div>
+    <div class="branding">
+      <img
+        src="/images/bienvenue/logo.png"
+        alt="Roland Pinot sculpteur sur bois"
+        class="logo"
+      />
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding-top: 1rem;
+  }
+
+  .image-wrap {
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .hero {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 2px;
+  }
+
+  .branding {
+    text-align: center;
+  }
+
+  .logo {
+    max-width: 380px;
+    width: 90%;
+    height: auto;
+    opacity: 0.9;
+  }
+</style>

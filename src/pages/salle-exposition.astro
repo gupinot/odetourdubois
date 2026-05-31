@@ -1,0 +1,27 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Salle exposition" theme="cream">
+  <div class="photo-page">
+    <img
+      src="/images/pages/salle_expo.jpg"
+      alt="Salle d'exposition Roland Pinot"
+    />
+  </div>
+</Layout>
+
+<style>
+  .photo-page {
+    display: flex;
+    justify-content: center;
+    padding-top: 1rem;
+  }
+  .photo-page img {
+    max-width: 100%;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
+    border-radius: 2px;
+  }
+</style>

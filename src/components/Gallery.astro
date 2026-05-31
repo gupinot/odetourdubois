@@ -1,0 +1,161 @@
+---
+interface Photo {
+  src: string;
+  title: string;
+}
+interface Props {
+  photos: Photo[];
+}
+const { photos } = Astro.props;
+---
+
+<div class="gallery">
+  {photos.map((photo, i) => (
+    <figure class="gallery-item" data-index={i}>
+      <img
+        src={photo.src}
+        alt={photo.title || "sculpture"}
+        loading="lazy"
+      />
+      {photo.title && <figcaption>{photo.title}</figcaption>}
+    </figure>
+  ))}
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox" aria-hidden="true">
+  <button id="lb-close" aria-label="Fermer">✕</button>
+  <button id="lb-prev" aria-label="Précédent">&#8249;</button>
+  <button id="lb-next" aria-label="Suivant">&#8250;</button>
+  <div id="lb-content">
+    <img id="lb-img" src="" alt="" />
+    <p id="lb-caption"></p>
+  </div>
+</div>
+
+<style>
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 700px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .gallery { grid-template-columns: 1fr; } }
+
+  .gallery-item {
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 2px;
+    background: #111;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+
+  .gallery-item:hover img { transform: scale(1.04); opacity: 0.85; }
+
+  figcaption {
+    color: #ccc;
+    font-size: 0.72rem;
+    padding: 0.3rem 0.4rem;
+    text-align: center;
+    font-style: italic;
+    letter-spacing: 0.03em;
+  }
+
+  /* Lightbox */
+  #lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.93);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+  #lightbox[aria-hidden="false"] { display: flex; }
+
+  #lb-content {
+    max-width: 90vw;
+    max-height: 90vh;
+    text-align: center;
+  }
+  #lb-img {
+    max-width: 100%;
+    max-height: 82vh;
+    object-fit: contain;
+    border-radius: 2px;
+  }
+  #lb-caption {
+    color: #ccc;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    font-style: italic;
+  }
+
+  #lb-close, #lb-prev, #lb-next {
+    position: fixed;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 2rem;
+    line-height: 1;
+    opacity: 0.7;
+    transition: opacity 0.15s;
+    padding: 0.5rem;
+  }
+  #lb-close, #lb-prev, #lb-next { opacity: 0.7; }
+  #lb-close:hover, #lb-prev:hover, #lb-next:hover { opacity: 1; }
+
+  #lb-close { top: 1rem; right: 1.2rem; font-size: 1.5rem; }
+  #lb-prev  { left: 0.5rem; top: 50%; transform: translateY(-50%); font-size: 3rem; }
+  #lb-next  { right: 0.5rem; top: 50%; transform: translateY(-50%); font-size: 3rem; }
+</style>
+
+<script define:vars={{ photos }}>
+  const items = document.querySelectorAll(".gallery-item");
+  const lb = document.getElementById("lightbox");
+  const lbImg = document.getElementById("lb-img");
+  const lbCaption = document.getElementById("lb-caption");
+
+  let current = 0;
+
+  function show(index) {
+    current = (index + photos.length) % photos.length;
+    lbImg.src = photos[current].src;
+    lbImg.alt = photos[current].title || "sculpture";
+    lbCaption.textContent = photos[current].title || "";
+    lb.setAttribute("aria-hidden", "false");
+  }
+
+  function close() {
+    lb.setAttribute("aria-hidden", "true");
+    lbImg.src = "";
+  }
+
+  items.forEach((item) => {
+    item.addEventListener("click", () => show(Number(item.dataset.index)));
+  });
+
+  document.getElementById("lb-close").addEventListener("click", close);
+  document.getElementById("lb-prev").addEventListener("click", () => show(current - 1));
+  document.getElementById("lb-next").addEventListener("click", () => show(current + 1));
+
+  lb.addEventListener("click", (e) => { if (e.target === lb) close(); });
+
+  document.addEventListener("keydown", (e) => {
+    if (lb.getAttribute("aria-hidden") === "true") return;
+    if (e.key === "Escape") close();
+    if (e.key === "ArrowLeft") show(current - 1);
+    if (e.key === "ArrowRight") show(current + 1);
+  });
+</script>

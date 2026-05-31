@@ -1,0 +1,49 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Contact" theme="white">
+  <div class="contact-page">
+    <h1>CONTACT</h1>
+    <div class="contact-info">
+      <p>
+        <a href="mailto:odetourdubois@orange.fr">odetourdubois@orange.fr</a>
+      </p>
+      <p class="tel">tél : 06.11.31.36.31</p>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .contact-page {
+    max-width: 600px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+    font-weight: normal;
+    letter-spacing: 0.15em;
+    color: #463c3c;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.75rem;
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 1rem;
+    color: #555;
+  }
+
+  .contact-info a {
+    color: #463c3c;
+    text-decoration: none;
+  }
+  .contact-info a:hover { text-decoration: underline; }
+
+  .tel { color: #555; }
+</style>

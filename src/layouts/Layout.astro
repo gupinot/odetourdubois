@@ -1,0 +1,167 @@
+---
+interface Props {
+  title: string;
+  theme?: "dark" | "light" | "white" | "cream";
+}
+
+const { title, theme = "dark" } = Astro.props;
+
+const navLinks = [
+  { href: "/", label: "Bienvenue" },
+  { href: "/sculptures-2021-2025", label: "Sculptures 2021-2025" },
+  { href: "/sculptures-2019-2020", label: "Sculptures 2019-2020" },
+  { href: "/sculptures-2015-2018", label: "Sculptures 2015-2018" },
+  { href: "/sculptures-1990-2014", label: "Sculptures 1990-2014" },
+  { href: "/salle-exposition", label: "Salle exposition" },
+  { href: "/expositions", label: "Expositions" },
+  { href: "/biographie", label: "Biographie" },
+  { href: "/contact", label: "CONTACT" },
+];
+
+const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Roland Pinot — sculpteur sur bois" />
+    <title>{title} — Roland Pinot sculpteur</title>
+    <link rel="icon" href="/favicon.ico" />
+  </head>
+  <body class={`theme-${theme}`}>
+    <nav class={`theme-${theme}`}>
+      <button class="menu-toggle" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul id="nav-list">
+        {navLinks.map((link) => {
+          const linkPath = link.href === "/" ? "/" : link.href;
+          const isActive = currentPath === linkPath;
+          return (
+            <li class={isActive ? "current" : ""}>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+  }
+
+  /* Thèmes */
+  body.theme-dark { background: #000; color: #fff; }
+  body.theme-light { background: #f7f6f6; color: #333; }
+  body.theme-white { background: #fff; color: #333; }
+  body.theme-cream { background: #fffded; color: #333; }
+
+  /* Nav */
+  nav {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    position: relative;
+  }
+
+  nav.theme-dark  { border-bottom: 1px solid #222; }
+  nav.theme-light { border-bottom: 1px solid #ddd; }
+  nav.theme-white { border-bottom: 1px solid #ddd; }
+  nav.theme-cream { border-bottom: 1px solid #e0dcb0; }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.1rem 0;
+    justify-content: center;
+    align-items: center;
+  }
+
+  nav ul li a {
+    display: block;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.875rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+
+  /* Couleurs nav selon thème */
+  nav.theme-dark ul li a         { color: #a1a1a1; }
+  nav.theme-dark ul li a:hover   { color: #eee; }
+  nav.theme-dark ul li.current a { color: #fff; font-weight: bold; }
+
+  nav.theme-light ul li a         { color: #999; font-weight: bold; font-size: 0.8rem; }
+  nav.theme-light ul li a:hover   { color: #f00; }
+  nav.theme-light ul li.current a { color: #666; }
+
+  nav.theme-white ul li a         { color: #666; }
+  nav.theme-white ul li a:hover   { color: #463c3c; }
+  nav.theme-white ul li.current a { color: #463c3c; font-weight: bold; }
+
+  nav.theme-cream ul li a         { color: #333; font-size: 0.8rem; }
+  nav.theme-cream ul li a:hover   { color: #4b484b; }
+  nav.theme-cream ul li.current a { color: #fffde3; }
+
+  /* Burger menu (mobile) */
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .menu-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #a1a1a1;
+    transition: all 0.2s;
+  }
+  nav.theme-light .menu-toggle span,
+  nav.theme-white .menu-toggle span,
+  nav.theme-cream .menu-toggle span { background: #666; }
+
+  @media (max-width: 700px) {
+    nav { padding: 0.6rem 1rem 0.6rem 1rem; min-height: 46px; }
+    .menu-toggle { display: flex; }
+    nav ul {
+      display: none;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      padding: 0.5rem 0;
+    }
+    nav ul.open { display: flex; }
+    nav ul li a { padding: 0.5rem 1rem; font-size: 0.9rem; }
+  }
+
+  main { padding: 1.5rem 1rem 3rem; }
+</style>
+
+<script>
+  const toggle = document.querySelector(".menu-toggle") as HTMLButtonElement;
+  const list = document.getElementById("nav-list") as HTMLUListElement;
+  toggle?.addEventListener("click", () => {
+    const open = list.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+</script>

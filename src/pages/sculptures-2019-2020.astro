@@ -1,0 +1,24 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Gallery from "../components/Gallery.astro";
+import { galleries } from "../data/galleries";
+
+const gallery = galleries.find((g) => g.id === "sculptures-2019-2020")!;
+---
+
+<Layout title="Sculptures 2019-2020" theme="dark">
+  <h1 class="page-title">Sculptures 2019-2020</h1>
+  <Gallery photos={gallery.photos} />
+</Layout>
+
+<style>
+  .page-title {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: normal;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #a1a1a1;
+    margin-bottom: 1.5rem;
+  }
+</style>

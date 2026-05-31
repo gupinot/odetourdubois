@@ -1,0 +1,27 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Biographie" theme="light">
+  <div class="photo-page">
+    <img
+      src="/images/pages/Biographie.jpg"
+      alt="Biographie Roland Pinot"
+    />
+  </div>
+</Layout>
+
+<style>
+  .photo-page {
+    display: flex;
+    justify-content: center;
+    padding-top: 1rem;
+  }
+  .photo-page img {
+    max-width: 100%;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
+    border-radius: 2px;
+  }
+</style>
