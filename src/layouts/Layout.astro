@@ -6,19 +6,22 @@ interface Props {
 
 const { title, theme = "dark" } = Astro.props;
 
+const base = import.meta.env.BASE_URL;
+
 const navLinks = [
-  { href: "/", label: "Bienvenue" },
-  { href: "/sculptures-2021-2025", label: "Sculptures 2021-2025" },
-  { href: "/sculptures-2019-2020", label: "Sculptures 2019-2020" },
-  { href: "/sculptures-2015-2018", label: "Sculptures 2015-2018" },
-  { href: "/sculptures-1990-2014", label: "Sculptures 1990-2014" },
-  { href: "/salle-exposition", label: "Salle exposition" },
-  { href: "/expositions", label: "Expositions" },
-  { href: "/biographie", label: "Biographie" },
-  { href: "/contact", label: "CONTACT" },
+  { href: base, label: "Bienvenue" },
+  { href: `${base}sculptures-2021-2025`, label: "Sculptures 2021-2025" },
+  { href: `${base}sculptures-2019-2020`, label: "Sculptures 2019-2020" },
+  { href: `${base}sculptures-2015-2018`, label: "Sculptures 2015-2018" },
+  { href: `${base}sculptures-1990-2014`, label: "Sculptures 1990-2014" },
+  { href: `${base}salle-exposition`, label: "Salle exposition" },
+  { href: `${base}expositions`, label: "Expositions" },
+  { href: `${base}biographie`, label: "Biographie" },
+  { href: `${base}contact`, label: "CONTACT" },
 ];
 
-const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+const normalize = (p: string) => p.replace(/\/$/, "") || "/";
+const currentPath = normalize(Astro.url.pathname);
 ---
 
 <!doctype html>
@@ -28,7 +31,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Roland Pinot — sculpteur sur bois" />
     <title>{title} — Roland Pinot sculpteur</title>
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href={`${base}favicon.ico`} />
   </head>
   <body class={`theme-${theme}`}>
     <nav class={`theme-${theme}`}>
@@ -37,8 +40,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
       </button>
       <ul id="nav-list">
         {navLinks.map((link) => {
-          const linkPath = link.href === "/" ? "/" : link.href;
-          const isActive = currentPath === linkPath;
+          const isActive = currentPath === normalize(link.href);
           return (
             <li class={isActive ? "current" : ""}>
               <a href={link.href}>{link.label}</a>
@@ -57,9 +59,12 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
 <style is:global>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  html, body { height: 100%; }
+
   body {
     font-family: Arial, sans-serif;
-    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
   /* Thèmes */
@@ -92,7 +97,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
   nav ul li a {
     display: block;
     padding: 0.3rem 0.75rem;
-    font-size: 0.875rem;
+    font-size: 1.2rem;
     text-decoration: none;
     white-space: nowrap;
     transition: color 0.15s;
@@ -103,7 +108,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
   nav.theme-dark ul li a:hover   { color: #eee; }
   nav.theme-dark ul li.current a { color: #fff; font-weight: bold; }
 
-  nav.theme-light ul li a         { color: #999; font-weight: bold; font-size: 0.8rem; }
+  nav.theme-light ul li a         { color: #999; font-weight: bold; }
   nav.theme-light ul li a:hover   { color: #f00; }
   nav.theme-light ul li.current a { color: #666; }
 
@@ -111,7 +116,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
   nav.theme-white ul li a:hover   { color: #463c3c; }
   nav.theme-white ul li.current a { color: #463c3c; font-weight: bold; }
 
-  nav.theme-cream ul li a         { color: #333; font-size: 0.8rem; }
+  nav.theme-cream ul li a         { color: #333; }
   nav.theme-cream ul li a:hover   { color: #4b484b; }
   nav.theme-cream ul li.current a { color: #fffde3; }
 
@@ -154,7 +159,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
     nav ul li a { padding: 0.5rem 1rem; font-size: 0.9rem; }
   }
 
-  main { padding: 1.5rem 1rem 3rem; }
+  main { flex: 1; min-height: 0; padding: 0 1rem 1rem; display: flex; flex-direction: column; }
 </style>
 
 <script>

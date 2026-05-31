@@ -7,13 +7,14 @@ interface Props {
   photos: Photo[];
 }
 const { photos } = Astro.props;
+const base = import.meta.env.BASE_URL;
 ---
 
 <div class="gallery">
   {photos.map((photo, i) => (
     <figure class="gallery-item" data-index={i}>
       <img
-        src={photo.src}
+        src={`${base}${photo.src.replace(/^\//, '')}`}
         alt={photo.title || "sculpture"}
         loading="lazy"
       />
@@ -38,7 +39,8 @@ const { photos } = Astro.props;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
-    max-width: 1000px;
+    width: 100%;
+    max-width: 2000px;
     margin: 0 auto;
   }
 
@@ -84,13 +86,21 @@ const { photos } = Astro.props;
   #lightbox[aria-hidden="false"] { display: flex; }
 
   #lb-content {
-    max-width: 90vw;
-    max-height: 90vh;
-    text-align: center;
+    position: absolute;
+    top: 2.5rem;
+    bottom: 0.5rem;
+    left: 4rem;
+    right: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
   #lb-img {
+    flex: 1;
+    min-height: 0;
+    min-width: 0;
     max-width: 100%;
-    max-height: 82vh;
     object-fit: contain;
     border-radius: 2px;
   }
@@ -99,6 +109,7 @@ const { photos } = Astro.props;
     margin-top: 0.5rem;
     font-size: 0.85rem;
     font-style: italic;
+    flex-shrink: 0;
   }
 
   #lb-close, #lb-prev, #lb-next {
