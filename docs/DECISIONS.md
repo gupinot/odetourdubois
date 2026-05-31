@@ -25,3 +25,28 @@
 - Marge haut/bas via `padding: 2.5rem 0` sur `.welcome`
 
 **Conséquences :** L'image occupe précisément la hauteur disponible entre le nav et le logo, quelle que soit la résolution de l'écran. Le `padding` de `.welcome` garantit un espace visuel en haut et en bas.
+
+---
+
+## 2026-05-31 — Pages secondaires : thème unifié dark
+
+**Contexte :** Les pages Salle exposition (cream), Expositions (light), Biographie (light) et Contact (white) utilisaient des thèmes différents des pages sculptures, créant une incohérence visuelle.
+
+**Décision :** Passage de toutes ces pages en `theme="dark"` (fond noir) pour uniformiser avec les pages sculptures. Les couleurs de texte de la page Contact ont été adaptées au fond sombre (gris clairs au lieu de bruns/gris foncés).
+
+**Conséquences :** Cohérence visuelle sur l'ensemble du site. Toutes les pages partagent le même fond noir.
+
+---
+
+## 2026-05-31 — Pages secondaires : layout vertical centré
+
+**Contexte :** Les pages Salle exposition, Expositions et Biographie affichaient leur image en haut à gauche sans centrage, contrairement à la page Bienvenue qui centre l'image verticalement.
+
+**Décision :** Application du même pattern flex full-height que la page Bienvenue :
+- `main` dans Layout.astro → `display: flex; flex-direction: column` (correction structurelle indispensable)
+- `.page-content` et `.welcome` → `flex: 1; min-height: 0` (au lieu de `height: 100%` qui ne se résolvait pas sans flex parent)
+- `.image-wrap` → `flex: 1; min-height: 0` + flex centré
+- `.page-img` → `height: 100%; max-height: 100%; width: auto; object-fit: contain`
+- `padding: 2.5rem 0` sur `.page-content` pour les marges haut/bas
+
+**Conséquences :** L'image est centrée verticalement et occupe toute la hauteur disponible sous le nav, cohérent avec la page Bienvenue. La correction de `main` en flex container bénéficie à toutes les pages actuelles et futures.
