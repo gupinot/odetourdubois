@@ -2,6 +2,20 @@
 
 ---
 
+## 2026-05-31 — Lightbox : maximisation de l'image
+
+**Contexte :** Dans la lightbox des pages Sculptures, l'image affichée était trop petite par rapport à l'espace disponible. Les contraintes `max-width: 90vw` et `max-height: 82vh` ne suffisaient pas car elles limitent sans forcer le grossissement, et l'image restait à sa taille naturelle.
+
+**Décision :** Refonte du layout de la lightbox :
+- `#lb-content` → `position: absolute; top: 2.5rem; bottom: 0.5rem; left: 4rem; right: 4rem` pour occuper tout l'espace disponible (en laissant de la place au bouton fermer et aux flèches de navigation)
+- `#lb-content` → `display: flex; flex-direction: column; align-items: center; justify-content: center`
+- `#lb-img` → `flex: 1; min-height: 0; min-width: 0; max-width: 100%; object-fit: contain` pour forcer l'image à remplir la hauteur disponible tout en respectant les proportions
+- `#lb-caption` → `flex-shrink: 0` pour que la légende ne soit pas écrasée
+
+**Conséquences :** L'image occupe désormais la quasi-totalité de la surface d'affichage de la lightbox, quelle que soit la taille de l'écran, tout en conservant les proportions d'origine.
+
+---
+
 ## 2026-05-31 — Navigation : taille de police
 
 **Contexte :** La police du header dans la version refaite était trop petite (0.875rem) comparée au site original iWeb, qui affiche un nav plus lisible sur deux lignes.
