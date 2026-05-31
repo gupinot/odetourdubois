@@ -50,3 +50,23 @@
 - `padding: 2.5rem 0` sur `.page-content` pour les marges haut/bas
 
 **Conséquences :** L'image est centrée verticalement et occupe toute la hauteur disponible sous le nav, cohérent avec la page Bienvenue. La correction de `main` en flex container bénéficie à toutes les pages actuelles et futures.
+
+---
+
+## 2026-05-31 — Biographie & Expositions : hauteur maximale de l'image
+
+**Contexte :** Sur les grandes résolutions, l'image pouvait s'étirer au-delà d'une taille lisible.
+
+**Décision :** `max-height: min(100%, 1050px)` sur `.page-img` dans biographie.astro et expositions.astro — l'image ne dépasse jamais la hauteur disponible ET ne dépasse jamais 1050px.
+
+**Conséquences :** Affichage maîtrisé sur grands écrans tout en conservant le comportement fluid sur petits écrans.
+
+---
+
+## 2026-05-31 — Contact : taille de police du mail et téléphone
+
+**Contexte :** Le mail et le téléphone étaient affichés en `1rem`, trop petit par rapport au reste de la page.
+
+**Décision :** Police passée à `1.4rem` sur `.contact-info`.
+
+**Conséquences :** Meilleure lisibilité et meilleure hiérarchie visuelle sur la page Contact.
